@@ -7,29 +7,32 @@ using System.Data.SqlClient;
 
 namespace EnergiDKLib
 {
-    public class UserDatabaseOperation : Database
+    public class UserDatabaseOperation : Database, UserDatabaseOperationInterface
     {
-        public string addUser(string username, string password, bool free)
+        public bool addUser(string username, string password, bool free)
         {
-            using (SqlConnection connection = dbConnect())
+            if (!userExists(username)) // can be used to check if user exsists
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO users (username, password, free) VALUES (@username, @password, @free)");
-                cmd.Connection = connection;
-                cmd.Parameters.AddWithValue("@username", username);
-                cmd.Parameters.AddWithValue("@password", password);
-                cmd.Parameters.AddWithValue("@free", free);
-                connection.Open();
-                cmd.ExecuteNonQuery();
+                using (SqlConnection connection = dbConnect())
+                {
+                    SqlCommand cmd = new SqlCommand("INSERT INTO users (username, password, free) VALUES (@username, @password, @free)");
+                    cmd.Connection = connection;
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@free", free);
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                return true;
             }
-
-            return "Created";
+            return false;
         }
 
         public bool validateLogin( string username, string password )
         {
             using (SqlConnection connection = dbConnect())
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM users WHERE username = @username AND password = @password");             
+                SqlCommand cmd = new SqlCommand("SELECT username, password FROM users WHERE username = @username AND password = @password");             
                 cmd.Connection = connection;
                 cmd.Parameters.AddWithValue("@username", username);
                 cmd.Parameters.AddWithValue("@password", password);
@@ -46,6 +49,28 @@ namespace EnergiDKLib
                 }
             }
             
+        }
+
+        private bool userExists(string username)
+        {
+            using (SqlConnection connection = dbConnect())
+            {
+                SqlCommand cmd = new SqlCommand("SELECT username FROM users WHERE username = @username");
+                cmd.Connection = connection;
+                cmd.Parameters.AddWithValue("@username", username);
+                connection.Open();
+
+                var result = cmd.ExecuteScalar() as string;
+                if (string.IsNullOrEmpty(result))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
         }
     }
 }

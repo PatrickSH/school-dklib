@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Data;
 namespace EnergiDKLib
 {
-    public class UsageDatabaseOperation : Database
+    public class UsageDatabaseOperation : Database, UsageDatabaseOperationInterface
     {
         public string addUsage(string type, string usage, string date)
         {
@@ -56,7 +56,7 @@ namespace EnergiDKLib
             {
                 SqlCommand cmd = new SqlCommand();
 
-                if ( string.IsNullOrEmpty(dateFrom) )
+                if ( string.IsNullOrEmpty(dateFrom) || string.IsNullOrEmpty(dateTo) )
                 {
                     cmd = new SqlCommand("SELECT * FROM energy_usage");
                 }
@@ -90,7 +90,7 @@ namespace EnergiDKLib
 
         }
 
-        public List<string[]> getPeriodUsage(string dateFrom = null, string dateTo = null)
+        public List<string[]> getPeriodUsage(string dateFrom, string dateTo)
         {
             return this.getAllUsage(dateFrom, dateTo);
         }

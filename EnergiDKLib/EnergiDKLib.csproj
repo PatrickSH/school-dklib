@@ -43,15 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calculation.cs" />
-    <Compile Include="calculationInterface.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DatabaseInterface.cs" />
     <Compile Include="UsageDatabaseOperation.cs" />
+    <Compile Include="UsageDatabaseOperationInterface.cs" />
     <Compile Include="UserDatabaseOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="UserDatabaseOperationInterface.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
