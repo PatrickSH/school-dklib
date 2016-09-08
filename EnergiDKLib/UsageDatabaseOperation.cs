@@ -9,7 +9,7 @@ namespace EnergiDKLib
 {
     public class UsageDatabaseOperation : Database, UsageDatabaseOperationInterface
     {
-        public string addUsage(string type, string usage, string date)
+        public bool addUsage(string type, string usage, string date)
         {
             using (SqlConnection connection = dbConnect())
             {
@@ -27,8 +27,7 @@ namespace EnergiDKLib
                 
                 cmd.ExecuteNonQuery();
             }
-
-            return "Created";
+            return true;
         }
 
         private string getNormalUsage( string type)

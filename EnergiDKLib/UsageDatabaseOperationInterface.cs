@@ -4,7 +4,7 @@ namespace EnergiDKLib
 {
     internal interface UsageDatabaseOperationInterface
     {
-        string addUsage(string type, string usage, string date);
+        bool addUsage(string type, string usage, string date);
 
         List<string[]> getAllUsage(string dateFrom = null, string dateTo = null);
 
